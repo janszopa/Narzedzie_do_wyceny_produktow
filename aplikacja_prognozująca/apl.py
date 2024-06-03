@@ -1,24 +1,17 @@
-#from PySide6.QtWidgets
-import numpy as np
 import pandas as pd
-import sklearn as sk
+import numpy as np
 
 from joblib import load
-
-
-
+from sklearn.preprocessing import StandardScaler
 
 model = load('model/model.joblib')
+model_columns = load('model/columns.joblib')
+scaler = load('model/scaler.joblib')
 
-data1 = pd.read_csv("https://raw.githubusercontent.com/janszopa/Narzedzie_do_wyceny_produktow/main/diamonds.csv")
-data = pd.DataFrame(data1)
-data= data.drop(columns=['Unnamed: 0', 'price'])
-data_test = data.head(10)
-print(data_test)
+data = np.array([[0.23, 61.5, 55.0, 3.95, 3.98, 2.43, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]])
+data = scaler.transform(data)
 
-cols_to_encode = data_test.columns[[1, 2, 3]]
-dataToPredConverted = pd.get_dummies(data_test, columns=data_test.columns[[1, 2, 3]])
+#df = pd.get_dummies(data, columns=['cut', 'color', 'clarity'])
 
-#dataToPredConverted = pd.get_dummies(data_test, columns=['cut', 'color', 'clarity'])
-#pred = model.predict(dataToPredConverted)
-print(dataToPredConverted)
+pred = model.predict(data)
+print(pred)
